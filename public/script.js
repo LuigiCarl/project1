@@ -10,6 +10,7 @@ const switchToRegister = document.querySelector("#switch-to-register");
 const switchToLogin = document.querySelector("#switch-to-login");
 const welcomeUsername = document.querySelector("#welcome-username");
 const logoutButton = document.querySelector("#logout-button");
+const loggedInUserKey = "auth-starter-username";
 
 function showMessage(element, message, type = "") {
   element.textContent = message;
@@ -40,6 +41,7 @@ function showWelcome(username) {
 function showLogin() {
   welcomeScreen.hidden = true;
   authCard.hidden = false;
+  localStorage.removeItem(loggedInUserKey);
   loginForm.reset();
   registerForm.reset();
   setFormMode("login");
@@ -85,7 +87,10 @@ loginForm.addEventListener("submit", async (event) => {
   if (!loginForm.reportValidity()) return;
 
   const result = await submitForm(loginForm, loginMessage, "/api/login");
-  if (result) showWelcome(result.username);
+  if (result) {
+    localStorage.setItem(loggedInUserKey, result.username);
+    showWelcome(result.username);
+  }
 });
 
 registerForm.addEventListener("submit", async (event) => {
@@ -101,3 +106,10 @@ registerForm.addEventListener("submit", async (event) => {
 });
 
 logoutButton.addEventListener("click", showLogin);
+
+const savedUsername = localStorage.getItem(loggedInUserKey);
+if (savedUsername && /^[a-z0-9_]{3,32}$/.test(savedUsername)) {
+  showWelcome(savedUsername);
+} else {
+  localStorage.removeItem(loggedInUserKey);
+}
