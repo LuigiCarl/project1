@@ -1,9 +1,8 @@
-const { Redis } = require("@upstash/redis");
 const crypto = require("node:crypto");
 const { promisify } = require("node:util");
+const redis = require("./redis");
 
 const scrypt = promisify(crypto.scrypt);
-const redis = Redis.fromEnv();
 
 function sendJson(res, status, body) {
   res.status(status).setHeader("Content-Type", "application/json");
