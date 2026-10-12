@@ -113,3 +113,5 @@ if (savedUsername && /^[a-z0-9_]{3,32}$/.test(savedUsername)) {
 } else {
   localStorage.removeItem(loggedInUserKey);
 }
+
+document.body.classList.remove("app-loading");

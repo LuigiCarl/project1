@@ -19,6 +19,10 @@ body {
     #f2f5fb;
 }
 
+body.app-loading .auth-card {
+  visibility: hidden;
+}
+
 button,
 input {
   font: inherit;
